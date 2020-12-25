@@ -56,15 +56,16 @@
           while ($row = mysqli_fetch_assoc($result)) {
             // echo $row['category_id'];
             // echo $row['category_name'];
+            $id = $row['category_id'];
             $cat = $row['category_name'];
             $desc = $row['category_description'];
             echo '<div class="col-md-4 my-2">
                     <div class="card" style="width: 18rem">
-                        <img src="https://source.unsplash.com/500x400/?' .$cat. ',programming" class="card-img-top" alt="..." />
+                        <img src="/img/card-' .$id. '.jpeg" class="card-img-top" alt="Image for this category" />
                         <div class="card-body">
-                            <h5 class="card-title">' .$cat. '</h5>
+                            <h5 class="card-title"><a href="/threadlist.php?catid=' .$id. '">' .$cat. '</a></h5>
                             <p class="card-text">' .substr($desc, 0, 90). '...</p>
-                            <a href="#" class="btn btn-success">View threads</a>
+                            <a href="/threadlist.php?catid=' .$id. '" class="btn btn-success">View threads</a>
                         </div>
                     </div>
                   </div>';
