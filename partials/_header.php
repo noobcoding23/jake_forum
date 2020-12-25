@@ -25,7 +25,7 @@ echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       </div>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/contact.php" tabindex="-1">Contact</a>
+      <a class="nav-link" href="/contact.php">Contact</a>
     </li>
   </ul>
   <div class="row mx-2">
