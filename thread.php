@@ -36,7 +36,7 @@
 
     <div class="container my-4">
         <div class="jumbotron">
-            <h1 class="display-4"><?php echo $title; ?> forums</h1>
+            <h1 class="display-4"><?php echo $title; ?></h1>
             <p class="lead"><?php echo $desc; ?></p>
             <hr class="my-4">
             <p>This is a peer to peer forum is for sharing knowledge with each other. No Spam / Advertising /
