@@ -64,7 +64,7 @@
                 Self-promote in the forums is not allowed. Do not post copyright-infringing material.
                 Do not post “offensive” posts, links or images.
                 Remain respectful of other members at all times.</p>
-            <p><b>Posted by: Jugal</b></p>
+            <p>Posted by: <b>Jugal</b></p>
         </div>
     </div>
 
