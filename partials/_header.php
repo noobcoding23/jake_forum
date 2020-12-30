@@ -36,7 +36,7 @@ echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
     <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
     <p class="text-light my-0 mx-2">Welcome ' .$_SESSION['useremail']. '</p>
-    <div class="button btn btn-outline-success ml-2" data-toggle="modal" data-target="#loginModal">Logout</div>
+    <a href="/partials/_logout.php" class="button btn btn-outline-success ml-2">Logout</a>
     </form>';
     
   }

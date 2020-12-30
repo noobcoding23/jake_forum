@@ -68,25 +68,37 @@
         </div>
     </div>
 
-    <div class="container">
-
+    <?php
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+    echo '<div class="container">
         <h1 class="py-2">Start a discussion</h1>
-        <form action="<?php echo $_SERVER['REQUEST_URI']?>" method="post">
-            <div class="form-group">
-                <label for="exampleInputEmail1">Problem title</label>
-                <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp" required>
-                <small id="emailHelp" class="form-text text-muted">Keep your title as short and crisp as
-                    possible</small>
-            </div>
-
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Elaborate your problem</label>
-                <textarea class="form-control" id="desc" name="desc" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-success">Submit</button>
-        </form>
-
+        <form action="' .$_SERVER["REQUEST_URI"]. '" method="post">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Problem title</label>
+        <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp" required>
+        <small id="emailHelp" class="form-text text-muted">Keep your title as short and crisp as
+            possible</small>
     </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Elaborate your problem</label>
+        <textarea class="form-control" id="desc" name="desc" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+
+    </div>';
+    }
+    else {
+    echo '
+        <div class="container">
+            <h1 class="py-2">Start a discussion</h1>
+            <p class="lead">You are not logged in. Please login to be able to start a discussion</p>
+        </div>
+    ';
+    }
+
+    ?>
 
     <div class="container" id="ques">
         <h1 class="py-2">Browse Quetions</h1>
