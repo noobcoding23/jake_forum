@@ -1,7 +1,7 @@
 <?php
-
+$showError = "false";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    include 'partials/_dbconnect.php';
+    include '_dbconnect.php';
     $user_email = $_POST['signupEmail'];
     $pass = $_POST['signupPassword'];
     $cpass = $_POST['signupcPassword'];
@@ -16,12 +16,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     else {
         if ($pass == $cpass) {
             $hash = password_hash($pass, PASSWORD_DEFAULT);
-            
+            $sql = "INSERT INTO `users` (`user_email`, `user_pass`, `timestamp`) VALUES ('$user_email', '$hash', CURRENT_TIMESTAMP)";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
+                $showAlert = true;
+                header("Location: /index.php?signupsuccess=true");
+                exit();
+            }
         }
         else {
             $showError = "Passwords don't match";
         }
     }
+    header("Location: /index.php?signupsuccess=false&error=$showError");
 
 }
 
