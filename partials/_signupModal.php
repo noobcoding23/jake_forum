@@ -11,10 +11,11 @@
             <form action="/partials/_handleSignup.php" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="signupEmail">Email address</label>
-                        <input type="email" class="form-control" id="signupEmail" name="signupEmail" aria-describedby="emailHelp" />
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                            else.</small>
+                        <label for="signupEmail">Username</label>
+                        <!-- <input type="email" class="form-control" id="signupEmail" name="signupEmail" aria-describedby="emailHelp" /> -->
+                        <input type="text" class="form-control" id="signupEmail" name="signupEmail" aria-describedby="emailHelp" />
+                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.</small> -->
                     </div>
                     <div class="form-group">
                         <label for="signupPassword">Password</label>

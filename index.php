@@ -14,8 +14,8 @@
 </head>
 
 <body>
-    <?php include 'partials/_header.php'?>
     <?php include 'partials/_dbconnect.php'?>
+    <?php include 'partials/_header.php'?>
 
     <!-- Slider starts from here -->
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">

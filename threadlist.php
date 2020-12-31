@@ -20,9 +20,8 @@
 </head>
 
 <body>
-    <?php include 'partials/_header.php'?>
-
     <?php include 'partials/_dbconnect.php'?>
+    <?php include 'partials/_header.php'?>
     <?php
     $id = $_GET['catid'];
     $sql = "SELECT * FROM `categories` WHERE category_id = $id";
@@ -40,7 +39,15 @@
         // insert thread into db
         $th_title = $_POST['title'];
         $th_desc = $_POST['desc'];
-        $sql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_cat_id`, `thread_user_id`, `timestamp`) VALUES ('$th_title', '$th_desc', '$id', '0', CURRENT_TIMESTAMP)";
+
+        $th_title = str_replace("<", "&lt;", $th_title);
+        $th_title = str_replace(">", "&gt;", $th_title);
+
+        $th_desc = str_replace("<", "&lt;", $th_desc);
+        $th_desc = str_replace(">", "&gt;", $th_desc);
+
+        $sno = $_POST['sno'];
+        $sql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_cat_id`, `thread_user_id`, `timestamp`) VALUES ('$th_title', '$th_desc', '$id', '$sno', CURRENT_TIMESTAMP)";
         $result = mysqli_query($conn, $sql);
         $showAlert = true;
         if ($showAlert) {
@@ -57,8 +64,12 @@
 
     <div class="container my-4">
         <div class="jumbotron">
-            <h1 class="display-4">Welcome to <?php echo $catname; ?> forums</h1>
-            <p class="lead"><?php echo $catdesc; ?></p>
+            <h1 class="display-4">Welcome to
+                <?php echo $catname; ?> forums
+            </h1>
+            <p class="lead">
+                <?php echo $catdesc; ?>
+            </p>
             <hr class="my-4">
             <p>This is a peer to peer forum is for sharing knowledge with each other. No Spam / Advertising /
                 Self-promote in the forums is not allowed. Do not post copyright-infringing material.
@@ -71,23 +82,22 @@
     <?php
     if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     echo '<div class="container">
-        <h1 class="py-2">Start a discussion</h1>
-        <form action="' .$_SERVER["REQUEST_URI"]. '" method="post">
-    <div class="form-group">
-        <label for="exampleInputEmail1">Problem title</label>
-        <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp" required>
-        <small id="emailHelp" class="form-text text-muted">Keep your title as short and crisp as
-            possible</small>
-    </div>
-
-    <div class="form-group">
-        <label for="exampleFormControlTextarea1">Elaborate your problem</label>
-        <textarea class="form-control" id="desc" name="desc" rows="3" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-success">Submit</button>
-    </form>
-
-    </div>';
+            <h1 class="py-2">Start a discussion</h1>
+            <form action="' .$_SERVER["REQUEST_URI"]. '" method="post">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Problem title</label>
+                    <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp" required>
+                    <small id="emailHelp" class="form-text text-muted">Keep your title as short and crisp as
+                        possible</small>
+                </div>
+                <input type="hidden" name="sno" value="' .$_SESSION["sno"]. '">
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Elaborate your problem</label>
+                    <textarea class="form-control" id="desc" name="desc" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>';
     }
     else {
     echo '
@@ -112,17 +122,24 @@
                 $id = $row['thread_id'];
                 $title = $row['thread_title'];
                 $desc = $row['thread_desc'];
+                $thread_time = $row['timestamp'];
+                $thread_user_id = $row['thread_user_id'];
+                $sql2 = "SELECT user_email FROM `users` WHERE sno = '$thread_user_id'";
+                $result2 = mysqli_query($conn, $sql2);
+                $row2 = mysqli_fetch_assoc($result2);
 
             echo '<div class="media my-3">
                 <img src="/img/userdefault.png" width="54px" class="mr-3" alt="...">
                     <div class="media-body">
+                        
                         <h5 class="mt-0"><a class="text-dark" href="/thread.php?threadid=' .$id. '">' .$title. '</a></h5>
                         ' .$desc. '
                     </div>
+                    <p class="font-weight-bold my-0">Asked by ' .$row2['user_email']. ' at <span style="color:gray;font-weight:500;">' .$thread_time. '</span></p>
                 </div>';
             }
             if ($noResult) {
-                echo '<div class="jumbotron jumbotron-fluid">
+                echo '<div class="jumbotron jumbotron-fluid my-3">
                         <div class="container">
                             <p class="display-4">No threads found</p>
                             <p class="lead">Be the first person to ask question to this category</p>

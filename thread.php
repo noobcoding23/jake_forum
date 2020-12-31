@@ -20,8 +20,8 @@
 </head>
 
 <body>
-    <?php include 'partials/_header.php'?>
     <?php include 'partials/_dbconnect.php'?>
+    <?php include 'partials/_header.php'?>
     <?php
     $id = $_GET['threadid'];
     $sql = "SELECT * FROM `threads` WHERE thread_id = $id";
@@ -29,6 +29,13 @@
     while ($row = mysqli_fetch_assoc($result)) {
         $title = $row['thread_title'];
         $desc = $row['thread_desc'];
+        $thread_user_id = $row['thread_user_id'];
+
+        // Query the users table to find out the Origianl Poster
+        $sql2 = "SELECT user_email FROM `users` WHERE sno = '$thread_user_id'";
+        $result2 = mysqli_query($conn, $sql2);
+        $row2 = mysqli_fetch_assoc($result2);
+        $posted_by = $row2['user_email'];
     }
     
 
@@ -40,7 +47,10 @@
     if ($method == 'POST') {
         // insert comment db
         $comment = $_POST['comment'];
-        $sql = "INSERT INTO `comments` (`comment_content`, `thread_id`, `comment_by`, `comment_time`) VALUES ('$comment', '$id', '0', CURRENT_TIMESTAMP);";
+        $comment = str_replace("<", "&lt;", $comment);
+        $comment = str_replace(">", "&gt;", $comment);
+        $sno = $_POST['sno'];
+        $sql = "INSERT INTO `comments` (`comment_content`, `thread_id`, `comment_by`, `comment_time`) VALUES ('$comment', '$id', '$sno', CURRENT_TIMESTAMP);";
         $result = mysqli_query($conn, $sql);
         $showAlert = true;
         if ($showAlert) {
@@ -64,7 +74,7 @@
                 Self-promote in the forums is not allowed. Do not post copyright-infringing material.
                 Do not post “offensive” posts, links or images.
                 Remain respectful of other members at all times.</p>
-            <p>Posted by: <b>Jugal</b></p>
+            <p>Posted by: <em><?php echo $posted_by;?></em></p>
         </div>
     </div>
 
@@ -76,6 +86,7 @@
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Type your comment</label>
                 <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                <input type="hidden" name="sno" value="' .$_SESSION["sno"]. '">
             </div>
             <button type="submit" class="btn btn-success">Post comment</button>
         </form>
@@ -104,19 +115,25 @@
                 $id = $row['comment_id'];
                 $content = $row['comment_content'];
                 $comment_time = $row['comment_time'];
+                $thread_user_id = $row['comment_by'];
+
+                $sql2 = "SELECT user_email FROM `users` WHERE sno = '$thread_user_id'";
+                $result2 = mysqli_query($conn, $sql2);
+                $row2 = mysqli_fetch_assoc($result2);
+
             echo '<div class="media my-3">
                 <img src="/img/userdefault.png" width="54px" class="mr-3" alt="...">
                 <div class="media-body">
-                        <p class="font-weight-bold my-0">Anonymous User at <span style="color:gray;font-weight:500;">' .$comment_time. '</span></p>
+                        <p class="font-weight-bold my-0">' .$row2['user_email']. ' at <span style="color:gray;font-weight:500;">' .$comment_time. '</span></p>
                         ' .$content. '
                     </div>
                 </div>';
             }
             if ($noResult) {
-                echo '<div class="jumbotron jumbotron-fluid">
+                echo '<div class="jumbotron jumbotron-fluid my-3">
                         <div class="container">
-                            <p class="display-4">No threads found</p>
-                            <p class="lead">Be the first person to ask question to this category</p>
+                            <p class="display-4">No comments found</p>
+                            <p class="lead">Be the first person to comment</p>
                         </div>
                     </div>';
             }
