@@ -35,7 +35,7 @@ echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="row mx-2">';
   session_start();
   if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-    echo '<form class="form-inline my-2 my-lg-0" action="search.php" method="get">
+    echo '<form class="form-inline my-2 my-lg-0" action="/search.php" method="get">
     <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
     <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
     <p class="text-light my-0 mx-2">Welcome ' .$_SESSION['useremail']. '</p>
@@ -44,7 +44,7 @@ echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     
   }
   else {
-   echo ' <form class="form-inline my-2 my-lg-0 action="search.php" method="get"">
+   echo ' <form class="form-inline my-2 my-lg-0" action="/search.php" method="get">
    <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
    <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
  </form>

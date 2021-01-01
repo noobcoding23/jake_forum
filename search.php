@@ -11,7 +11,7 @@
         integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous" />
     
     <style>
-        .container {
+        #main-container {
             min-height: 100vh;
         }
     </style>
@@ -24,12 +24,45 @@
     <?php include 'partials/_header.php'?>
 
     <!-- search results -->
-    <div class="container my-3">
+    <div class="container my-3" id="main-container">
         <h1 class="py-3">Search results for <em>"<?php echo $_GET["search"]; ?>"</em></h1>
-        <div class="results">
-            <h3><a href="" class="text-dark">Cannot install a pyaudio</a></h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, fugit natus enim facere dolores quis consequuntur consequatur amet commodi optio dolorum, exercitationem reiciendis animi debitis illo! Repellendus sunt cupiditate quae, molestiae voluptate nemo obcaecati.</p>
-        </div>
+
+        <?php
+        $noResults = true;
+        $query = $_GET["search"];
+        $sql = "SELECT * FROM threads WHERE MATCH (thread_title, thread_desc) against ('$query')";
+        $result = mysqli_query($conn, $sql);
+        while ($row = mysqli_fetch_assoc($result)) {
+            $title = $row['thread_title'];
+            $desc = $row['thread_desc'];
+            $thread_id = $row['thread_id'];
+            $url = "thread.php?threadid=". $thread_id;
+            $noResults = false;
+
+            // Display the search results
+            echo '<div class="results">
+                    <h3><a href="'. $url .'" class="text-dark">' .$title. '</a></h3>
+                    <p>' .$desc. '</p>
+                </div>';
+
+        }
+        if ($noResults) {
+            echo '<div class="jumbotron jumbotron-fluid my-3">
+                <div class="container">
+                    <p class="display-4">No Results found</p>
+                    <p class="lead">
+                    Suggestions:
+                    <ul>
+                    <li>Make sure that all words are spelled correctly.</li>
+                    <li>Try different keywords.</li>
+                    <li>Try more general keywords.</li>
+                    </ul>
+                    </p>
+                </div>
+                </div>';
+        }
+    
+        ?>
 
     </div>
 
