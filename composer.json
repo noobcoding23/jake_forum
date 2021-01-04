@@ -1,5 +1,7 @@
 {
     "name": "jugalkdas/jake_forum",
     "description": "This is my first package",
-    "require": {}
+    "require": {
+        "dompdf/dompdf": "^1.0"
+    }
 }
